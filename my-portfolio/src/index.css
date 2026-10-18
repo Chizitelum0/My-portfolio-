@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #000000;
+  --color-steel: #808080;
+  --font-sans: "Bricolage Grotesque", system-ui, sans-serif;
+}
+
+@property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+
+html { scroll-behavior: smooth; }
+body { background: #000; color: #fff; font-family: var(--font-sans); }
+section { scroll-margin-top: 5rem; }
+
+.glass {
+  background: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(14px);
+}
+.glow { transition: box-shadow .3s, border-color .3s, transform .3s; }
+.glow:hover { border-color: rgb(255 255 255 / 0.35); box-shadow: 0 0 40px rgb(255 255 255 / 0.08); }
+
+.spin-border {
+  padding: 2px; border-radius: 1.5rem;
+  background: conic-gradient(from var(--angle), transparent 0 55%, #808080 75%, #fff 100%);
+  animation: spin 5s linear infinite;
+}
+@keyframes spin { to { --angle: 360deg; } }
+@keyframes bounce-y { 50% { transform: translateY(8px); } }
+.bounce-y { animation: bounce-y 1.6s ease-in-out infinite; }
+
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .spin-border, .bounce-y { animation: none; }
+}
