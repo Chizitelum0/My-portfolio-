@@ -100,7 +100,7 @@ function Hero() {
       </div>
       <div className="spin-border mx-auto w-full max-w-sm">
         <div className="flex aspect-square items-center justify-center rounded-[1.4rem] bg-black p-6">
-          <img src="/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
+          <img src="src/assets/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
         </div>
       </div>
       <a href="#about" aria-label="Scroll down" className="bounce-y absolute bottom-6 left-1/2 text-steel"><ArrowDown /></a>
@@ -232,7 +232,7 @@ function Testimonials() {
 }
 
 function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+ const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -257,10 +257,20 @@ function Contact() {
     }
     setStatus("sending");
     try {
-      const res = await fetch(profile.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(form) });
-      if (!res.ok) throw new Error();
-      setStatus("sent"); setForm({ name: "", email: "", message: "" });
-    } catch { setStatus("error"); }
+  const res = await fetch(profile.formEndpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ ...form, access_key: profile.accessKey, subject: "New portfolio message" }),
+  });
+  const data = await res.json();
+  console.log("Web3Forms:", res.status, data);
+  if (!data.success) throw new Error(data.message || "Request failed");
+  setStatus("sent");
+  setForm({ name: "", email: "", message: "" });
+} catch (err) {
+  console.error(err);
+  setStatus("error");
+}
   };
 
   const field = "glass w-full rounded-xl px-4 py-3 outline-none placeholder:text-steel focus:border-white/50";

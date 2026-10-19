@@ -6,8 +6,9 @@ export const profile = {
   headline: "Backend engineer and Database engineer.",
   bio: "I'm a backend-focused engineer building secure, scalable and reliable systems: APIs, databases, transaction processing and ledgers. I'm currently building a POS app and a Business Management Platform, with the goal of solving real financial problems for underserved businesses. I learn by building and documenting my decisions.",
   email: "you@example.com", // TODO
-  location: "Enugu, Nigeria", // TODO
-  formEndpoint: "", // optional Formspree / Web3Forms URL
+  location: "Enugu, Nigeria",
+  formEndpoint: "https://api.web3forms.com/submit",
+  accessKey: import.meta.env.VITE_W3F_KEY,
 };
 
 export const stats = [
@@ -38,14 +39,14 @@ export const skills = [
   { group: "Frontend", items: [{ name: "React", level: 50, tag: "Basic" }] },
 ];
 
-// TODO: replace with your real projects
+// TODO: add complete, pending, not started and deployed. add later
 export const projects = [
-  { title: "Multi-tenant ledger API", category: "Backend", desc: "Double-entry ledger with per-tenant isolation.", metric: "Fastify · PostgreSQL", link: "https://github.com/chizitelum0" },
+  { title: "Multi-tenant ledger API", category: "Backend", desc: "Double-entry ledger with per-tenant isolation.", metric: "Fastify · PostgreSQL", link: "https://github.com/chizitelum0"},
   { title: "Tenant-safe schema design", category: "Database", desc: "Row-level security patterns on Supabase.", metric: "Supabase · RLS", link: "https://github.com/chizitelum0" },
-  { title: "Payments service", category: "Backend", desc: "Idempotent payment processing with retries.", metric: "Node.js · Express", link: "https://github.com/chizitelum0" },
+  { title: "Payments service POS", category: "Backend", desc: "Idempotent payment processing with retries.", metric: "Node.js · Express", link: "https://github.com/chizitelum0" },
   { title: "Admin dashboard", category: "Frontend", desc: "React dashboard over the ledger API.", metric: "React · TypeScript", link: "https://github.com/chizitelum0" },
 ];
-
+// service
 export const services = [
   { icon: "Layers", title: "Multi-tenant backend architecture", desc: "Planning tenant isolation, data models and API boundaries so the system stays correct as it grows.", big: true },
   { icon: "Server", title: "API development", desc: "Fastify, Express and Node.js services." },
@@ -53,10 +54,10 @@ export const services = [
   { icon: "ShieldCheck", title: "Correctness reviews", desc: "Finding bugs in money-handling code before users do." },
 ];
 
-// TODO: replace names, roles and quotes with real ones (with permission)
+// Testimonals
 export const testimonials = [
-  { name: "MY DAD", role: "Customer", quote: "Make sure your foundations are as solid as your logic, because the backend holds the whole house up.", result: "Result or metric", photo: "/client1.jpg" },
-  { name: "CHIZITELUM.me", role: "Customer", quote: "Build for scale: Just like a good database schema, design your life to handle future growth without crashing.", result: "Result or metric", photo: "/client2.jpg" },
+  { name: "MY DAD", role: "Customer", quote: "Make sure your foundations are as solid as your logic, because the backend holds the whole house up.", result: "Result or metric", photo: "src/assets/client1.jpg" },
+  { name: "CHIZITELUM.me", role: "Customer", quote: "Build for scale: Just like a good database schema, design your life to handle future growth without crashing.", result: "Result or metric", photo: "src/assets/client2.jpg" },
 ];
 
 export const socials = [
