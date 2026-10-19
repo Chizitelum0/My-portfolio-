@@ -56,8 +56,8 @@ export const services = [
 
 // Testimonals
 export const testimonials = [
-  { name: "MY DAD", role: "Customer", quote: "Make sure your foundations are as solid as your logic, because the backend holds the whole house up.", result: "Result or metric", photo: "src/assets/client1.jpg" },
-  { name: "CHIZITELUM.me", role: "Customer", quote: "Build for scale: Just like a good database schema, design your life to handle future growth without crashing.", result: "Result or metric", photo: "src/assets/client2.jpg" },
+  { name: "MY DAD", role: "Customer", quote: "Make sure your foundations are as solid as your logic, because the backend holds the whole house up.", result: "Result or metric", photo: "/public/client1.jpg" },
+  { name: "CHIZITELUM.me", role: "Customer", quote: "Build for scale: Just like a good database schema, design your life to handle future growth without crashing.", result: "Result or metric", photo: "/public/client2.jpg" },
 ];
 
 export const socials = [
