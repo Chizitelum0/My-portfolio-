@@ -100,7 +100,7 @@ function Hero() {
       </div>
       <div className="spin-border mx-auto w-full max-w-sm">
         <div className="flex aspect-square items-center justify-center rounded-[1.4rem] bg-black p-6">
-          <img src="src/assets/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
+          <img src="/public/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
         </div>
       </div>
       <a href="#about" aria-label="Scroll down" className="bounce-y absolute bottom-6 left-1/2 text-steel"><ArrowDown /></a>
