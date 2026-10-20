@@ -154,6 +154,14 @@ function Skills() {
 }
 
 function Projects() {
+  const STATUS_STYLES = {
+    Deployed:
+      "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
+    "Under Development":
+      "border-blue-400/30 bg-blue-400/10 text-blue-300",
+    "Not Started":
+      "border-white/15 bg-white/5 text-steel",
+  };
   const cats = ["All", ...new Set(projects.map((p) => p.category))];
   const [cat, setCat] = useState("All");
   const [idx, setIdx] = useState(0);
@@ -176,7 +184,17 @@ function Projects() {
       <div ref={track} onScroll={(e) => setIdx(Math.round(e.currentTarget.scrollLeft / STEP))} className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
         {list.map((p) => (
           <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className="glass glow w-72 shrink-0 snap-start rounded-2xl p-6">
-            <p className="text-sm text-steel">{p.category}</p>
+            <div className="mb-4 flex items-center justify-between gap-2">
+              <span
+                className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[p.status] || STATUS_STYLES["Not Started"]
+                  }`}
+              >
+                <span className="mr-2 h-1.5 w-1.5 rounded-full bg-current" />
+                {p.status || "Not Started"}
+              </span>
+
+              <span className="text-xs text-steel">{p.category}</span>
+            </div>
             <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
             <p className="mt-2 text-sm text-white/80">{p.desc}</p>
             <p className="mt-6 text-sm font-semibold">{p.metric}</p>
@@ -232,7 +250,7 @@ function Testimonials() {
 }
 
 function Contact() {
- const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -257,20 +275,20 @@ function Contact() {
     }
     setStatus("sending");
     try {
-  const res = await fetch(profile.formEndpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ ...form, access_key: profile.accessKey, subject: "New portfolio message" }),
-  });
-  const data = await res.json();
-  console.log("Web3Forms:", res.status, data);
-  if (!data.success) throw new Error(data.message || "Request failed");
-  setStatus("sent");
-  setForm({ name: "", email: "", message: "" });
-} catch (err) {
-  console.error(err);
-  setStatus("error");
-}
+      const res = await fetch(profile.formEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ ...form, access_key: profile.accessKey, subject: "New portfolio message" }),
+      });
+      const data = await res.json();
+      console.log("Web3Forms:", res.status, data);
+      if (!data.success) throw new Error(data.message || "Request failed");
+      setStatus("sent");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
   };
 
   const field = "glass w-full rounded-xl px-4 py-3 outline-none placeholder:text-steel focus:border-white/50";

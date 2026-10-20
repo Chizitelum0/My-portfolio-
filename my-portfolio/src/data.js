@@ -40,12 +40,42 @@ export const skills = [
 ];
 
 // TODO: add complete, pending, not started and deployed. add later
+
 export const projects = [
-  { title: "Multi-tenant ledger API", category: "Backend", desc: "Double-entry ledger with per-tenant isolation.", metric: "Fastify · PostgreSQL", link: "https://github.com/chizitelum0"},
-  { title: "Tenant-safe schema design", category: "Database", desc: "Row-level security patterns on Supabase.", metric: "Supabase · RLS", link: "https://github.com/chizitelum0" },
-  { title: "Payments service POS", category: "Backend", desc: "Idempotent payment processing with retries.", metric: "Node.js · Express", link: "https://github.com/chizitelum0" },
-  { title: "Admin dashboard", category: "Frontend", desc: "React dashboard over the ledger API.", metric: "React · TypeScript", link: "https://github.com/chizitelum0" },
+  {
+    title: "POS Transaction App",
+    category: "Backend",
+    status: "Under Development",
+    desc: "A point-of-sale application for products, checkout, transactions, and reporting.",
+    metric: "Node.js · Express · MongoDB",
+    link: "https://github.com/Chizitelum0/POS-Transaction-App",
+  },
+  {
+    title: "Business Management Platform",
+    category: "Backend",
+    status: "Under Development",
+    desc: "Business software for managing operations and workflows.",
+    metric: "React · Supabase",
+    link: "https://github.com/Chizitelum0",
+  },
+  {
+    title: "Multi-tenant Ledger API",
+    category: "Backend",
+    status: "Not Started",
+    desc: "A planned financial backend with transaction integrity and tenant isolation.",
+    metric: "Node.js · PostgreSQL",
+    link: "https://github.com/Chizitelum0",
+  },
+  {
+    title: "Admin Dashboard",
+    category: "Frontend",
+    status: "Not Started",
+    desc: "A planned dashboard for business operations and reporting.",
+    metric: "React · TypeScript",
+    link: "https://github.com/Chizitelum0",
+  },
 ];
+
 // service
 export const services = [
   { icon: "Layers", title: "Multi-tenant backend architecture", desc: "Planning tenant isolation, data models and API boundaries so the system stays correct as it grows.", big: true },
