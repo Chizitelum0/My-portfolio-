@@ -5,7 +5,7 @@ export const profile = {
   role: "Backend & database engineer",
   headline: "Backend engineer and Database engineer.",
   bio: "I'm a backend-focused engineer building secure, scalable and reliable systems: APIs, databases, transaction processing and ledgers. I'm currently building a POS app and a Business Management Platform, with the goal of solving real financial problems for underserved businesses. I learn by building and documenting my decisions.",
-  email: "you@example.com", // TODO
+  email: "chizitelumemma0@gmail.com",
   location: "Enugu, Nigeria",
   formEndpoint: "https://api.web3forms.com/submit",
   accessKey: import.meta.env.VITE_W3F_KEY,
@@ -39,7 +39,7 @@ export const skills = [
   { group: "Frontend", items: [{ name: "React", level: 50, tag: "Basic" }] },
 ];
 
-// TODO: add complete, pending, not started and deployed. add later
+// Projects 
 
 export const projects = [
   {
