@@ -187,35 +187,35 @@ function Projects() {
         const el = e.currentTarget;
         const cards = Array.from(el.children);
         if (cards.length) {
-          const nearest = cards.reduce((best, card, i) =>
+          const nearest = cards.reduce((best, card, index) =>
             Math.abs(card.offsetLeft - el.scrollLeft - el.offsetLeft) <
-            Math.abs(cards[best].offsetLeft - el.scrollLeft - el.offsetLeft) ? i : best, 0);
+            Math.abs(cards[best].offsetLeft - el.scrollLeft - el.offsetLeft) ? index : best, 0);
           setIdx(nearest);
         }
       }} className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
-        {list.map((p) => (
-          p.link
-            ? <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className="glass glow w-[min(82vw,20rem)] shrink-0 snap-start rounded-2xl p-6">
-            : <article key={p.title} className="glass glow w-[min(82vw,20rem)] shrink-0 snap-start rounded-2xl p-6">
-            <div className="mb-4 flex items-center justify-between gap-2">
-              <span
-                className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[p.status] || STATUS_STYLES["Not Started"]
-                  }`}
-              >
-                <span className="mr-2 h-1.5 w-1.5 rounded-full bg-current" />
-                {p.status || "Not Started"}
-              </span>
-
-              <span className="text-xs text-steel">{p.category}</span>
-            </div>
-            <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
-            <p className="mt-2 text-sm text-white/80">{p.desc}</p>
-            <p className="mt-6 text-sm font-semibold">{p.metric}</p>
-            {p.private && <p className="mt-3 text-xs text-steel">Private project · Source code not public</p>}
-            {p.status === "Planned" && <p className="mt-3 text-xs text-steel">Planned project</p>}
-            {p.link && <span className="mt-5 inline-block text-sm font-semibold underline underline-offset-4">View project</span>}
-          {p.link ? </a> : </article>
-        ))}
+        {list.map((p) => {
+          const content = (
+            <>
+              <div className="mb-4 flex items-center justify-between gap-2">
+                <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[p.status] || STATUS_STYLES.Planned}`}>
+                  <span className="mr-2 h-1.5 w-1.5 rounded-full bg-current" />
+                  {p.status || "Planned"}
+                </span>
+                <span className="text-xs text-steel">{p.category}</span>
+              </div>
+              <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
+              <p className="mt-2 text-sm text-white/80">{p.desc}</p>
+              <p className="mt-6 text-sm font-semibold">{p.metric}</p>
+              {p.private && <p className="mt-3 text-xs text-steel">Private project · Source code not public</p>}
+              {p.status === "Planned" && <p className="mt-3 text-xs text-steel">Planned project</p>}
+              {p.link && <span className="mt-5 inline-block text-sm font-semibold underline underline-offset-4">View project</span>}
+            </>
+          );
+          const cardClass = "glass glow block w-[min(82vw,20rem)] shrink-0 snap-start rounded-2xl p-6";
+          return p.link
+            ? <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className={cardClass}>{content}</a>
+            : <article key={p.title} className={cardClass}>{content}</article>;
+        })}
       </div>
       <div className="mt-4 flex justify-center gap-2">
         {list.map((p, i) => (
