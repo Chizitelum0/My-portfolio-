@@ -96,7 +96,7 @@ function Hero() {
         <h1 className="max-w-3xl text-[clamp(2.65rem,8vw,5.6rem)] font-extrabold leading-[1.02] tracking-[-0.055em]">{profile.headline}</h1>
         <p className="mt-6 max-w-xl text-base leading-8 text-white/65 sm:text-lg">I build and learn by working on practical software: backend services, data systems, and tools for real business workflows.</p>
         <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
-          <a href="#projects" className="rounded-full bg-white px-6 py-3.5 text-center text-sm font-semibold text-black transition hover:bg-white/85">Explore my work <span aria-hidden="true">↗</span></a>
+          <a href="#projects" className="rounded-full bg-white px-6 py-3.5 text-center text-sm font-semibold text-black transition hover:bg-white/85">Explore my work</a>
           <a href="#contact" className="glass glow rounded-full px-6 py-3.5 text-center text-sm font-semibold">Get in touch</a>
         </div>
         <dl className="mt-10 grid max-w-lg grid-cols-3 divide-x divide-white/15 border-t border-white/10 pt-6 sm:mt-14">
