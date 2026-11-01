@@ -74,12 +74,12 @@ export const projects = [
   },
 ];
 
-// service
+// Engineering areas currently being explored and developed.
 export const services = [
-  { icon: "Layers", title: "Multi-tenant backend architecture", desc: "Planning tenant isolation, data models and API boundaries so the system stays correct as it grows.", big: true },
-  { icon: "Server", title: "API development", desc: "Fastify, Express and Node.js services." },
-  { icon: "Database", title: "PostgreSQL & Supabase", desc: "Schemas, migrations, RLS and queries." },
-  { icon: "ShieldCheck", title: "Correctness reviews", desc: "Finding bugs in money-handling code before users do." },
+  { icon: "Layers", title: "Backend architecture", desc: "Designing clear service boundaries, data models, and maintainable backend structures.", big: true },
+  { icon: "Server", title: "API design & development", desc: "Building and learning to structure HTTP APIs with Node.js, Express, and Fastify." },
+  { icon: "Database", title: "Database design", desc: "Working with relational schemas, queries, migrations, and Supabase." },
+  { icon: "ShieldCheck", title: "Transaction correctness", desc: "Learning to model reliable transaction flows, validation, and audit-friendly records." },
 ];
 
 export const socials = [
