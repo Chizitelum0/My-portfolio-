@@ -3,8 +3,8 @@
 export const profile = {
   name: "Chizitelum",
   role: "Backend & database engineer",
-  headline: "Backend engineer and Database engineer.",
-  bio: "I'm a backend-focused engineer building secure, scalable and reliable systems: APIs, databases, transaction processing and ledgers. I'm currently building a POS app and a Business Management Platform, with the goal of solving real financial problems for underserved businesses. I learn by building and documenting my decisions.",
+  headline: "Backend engineer building reliable APIs, databases, and business systems.",
+  bio: "I'm focused on backend engineering and the foundations behind dependable software: APIs, databases, transaction processing, and business systems. I learn by building practical projects, improving their architecture, and documenting the decisions along the way.",
   email: "chizitelumemma0@gmail.com",
   location: "Enugu, Nigeria",
   formEndpoint: "https://api.web3forms.com/submit",
@@ -27,16 +27,16 @@ export const stack = ["TypeScript", "JavaScript", "Node.js", "Fastify", "Express
 
 export const skills = [
   { group: "Languages", items: [
-    { name: "JavaScript", level: 75, tag: "Intermediate" },
-    { name: "TypeScript", level: 70, tag: "Intermediate" },
-    { name: "Go", level: 10, tag: "Learning next" },
-    { name: "Python", level: 10, tag: "Learning next" } ] },
+    { name: "JavaScript", tag: "Currently using" },
+    { name: "TypeScript", tag: "Currently using" },
+    { name: "Go", tag: "Exploring" },
+    { name: "Python", tag: "Exploring" } ] },
   { group: "Backend & data", items: [
-    { name: "Node.js", level: 75, tag: "Intermediate" },
-    { name: "Fastify / Express", level: 70, tag: "Intermediate" },
-    { name: "PostgreSQL", level: 75, tag: "Intermediate" },
-    { name: "Supabase", level: 70, tag: "Intermediate" } ] },
-  { group: "Frontend", items: [{ name: "React", level: 50, tag: "Basic" }] },
+    { name: "Node.js", tag: "Currently using" },
+    { name: "Fastify / Express", tag: "Working with" },
+    { name: "PostgreSQL", tag: "Working with" },
+    { name: "Supabase", tag: "Working with" } ] },
+  { group: "Frontend", items: [{ name: "React", tag: "Working with" }] },
 ];
 
 // Projects 
@@ -54,25 +54,23 @@ export const projects = [
     title: "Business Management Platform",
     category: "Backend",
     status: "Under Development",
-    desc: "Business software for managing operations and workflows.",
-    metric: "React · Supabase",
-    link: "https://github.com/Chizitelum0",
+    desc: "A private, operations-focused platform being developed to help businesses manage inventory, suppliers, purchasing, staff, and everyday workflows.",
+    metric: "Business operations · Backend & data architecture",
+    private: true,
   },
   {
     title: "Multi-tenant Ledger API",
     category: "Backend",
-    status: "Not Started",
+    status: "Planned",
     desc: "A planned financial backend with transaction integrity and tenant isolation.",
     metric: "Node.js · PostgreSQL",
-    link: "https://github.com/Chizitelum0",
   },
   {
     title: "Admin Dashboard",
     category: "Frontend",
-    status: "Not Started",
+    status: "Planned",
     desc: "A planned dashboard for business operations and reporting.",
     metric: "React · TypeScript",
-    link: "https://github.com/Chizitelum0",
   },
 ];
 
@@ -82,12 +80,6 @@ export const services = [
   { icon: "Server", title: "API development", desc: "Fastify, Express and Node.js services." },
   { icon: "Database", title: "PostgreSQL & Supabase", desc: "Schemas, migrations, RLS and queries." },
   { icon: "ShieldCheck", title: "Correctness reviews", desc: "Finding bugs in money-handling code before users do." },
-];
-
-// Testimonals
-export const testimonials = [
-  { name: "MY DAD", role: "Customer", quote: "Make sure your foundations are as solid as your logic, because the backend holds the whole house up.", result: "Result or metric", photo: "/public/client1.jpg" },
-  { name: "CHIZITELUM.me", role: "Customer", quote: "Build for scale: Just like a good database schema, design your life to handle future growth without crashing.", result: "Result or metric", photo: "/public/client2.jpg" },
 ];
 
 export const socials = [
