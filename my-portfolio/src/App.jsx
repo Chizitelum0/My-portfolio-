@@ -60,21 +60,28 @@ const Arrow = ({ onClick, label, children }) => (
 function Navbar() {
   const active = useScrollSpy(NAV);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 20);
     on(); window.addEventListener("scroll", on);
     return () => window.removeEventListener("scroll", on);
   }, []);
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition ${scrolled ? "glass" : ""}`}>
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <a href="#top" className="font-extrabold">{"</>"} {profile.name}</a>
+    <header className={`fixed inset-x-0 top-0 z-50 border-b border-white/10 transition ${scrolled || menuOpen ? "glass" : "bg-black/70 backdrop-blur-md"}`}>
+      <nav className="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-4" aria-label="Main navigation">
+        <a href="#top" className="font-extrabold" onClick={() => setMenuOpen(false)}>{"</>"} {profile.name}</a>
         <ul className="hidden gap-6 text-sm sm:flex">
           {NAV.map((id) => (
-            <li key={id}><a href={`#${id}`} className={`capitalize transition hover:text-white ${active === id ? "text-white" : "text-steel"}`}>{id}</a></li>
+            <li key={id}><a href={`#${id}`} className={`capitalize transition hover:text-white ${active === id ? "text-white" : "text-steel"}`}>{id === "engineering-focus" ? "Engineering focus" : id}</a></li>
           ))}
         </ul>
-        <a href="#contact" className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black">Hire me</a>
+        <div className="flex items-center gap-3">
+          <a href="#contact" className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black">Hire me</a>
+          <button type="button" className="glass rounded-full px-3 py-2 text-sm sm:hidden" aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? "Close" : "Menu"}</button>
+        </div>
+        {menuOpen && <div id="mobile-navigation" className="glass absolute inset-x-4 top-full mt-2 flex flex-col gap-4 rounded-2xl p-5 text-sm shadow-2xl sm:hidden">
+          {NAV.map((id) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} className="capitalize text-steel hover:text-white">{id === "engineering-focus" ? "Engineering focus" : id}</a>)}
+        </div>}
       </nav>
     </header>
   );
@@ -150,7 +157,7 @@ function Projects() {
       "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
     "Under Development":
       "border-blue-400/30 bg-blue-400/10 text-blue-300",
-    "Not Started":
+    Planned:
       "border-white/15 bg-white/5 text-steel",
   };
   const cats = ["All", ...new Set(projects.map((p) => p.category))];
@@ -158,8 +165,12 @@ function Projects() {
   const [idx, setIdx] = useState(0);
   const track = useRef(null);
   const list = cat === "All" ? projects : projects.filter((p) => p.category === cat);
-  const STEP = 308;
-  const to = (i) => track.current?.scrollTo({ left: i * STEP, behavior: "smooth" });
+  const to = (i) => {
+    const card = track.current?.children[i];
+    if (card && track.current) {
+      track.current.scrollTo({ left: card.offsetLeft - track.current.offsetLeft, behavior: "smooth" });
+    }
+  };
   useEffect(() => { setIdx(0); track.current?.scrollTo({ left: 0 }); }, [cat]);
   return (
     <Section id="projects" title="Projects">
@@ -172,9 +183,20 @@ function Projects() {
           <Arrow label="Next project" onClick={() => to(Math.min(idx + 1, list.length - 1))}><ChevronRight className="h-4 w-4" /></Arrow>
         </div>
       </div>
-      <div ref={track} onScroll={(e) => setIdx(Math.round(e.currentTarget.scrollLeft / STEP))} className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
+      <div ref={track} onScroll={(e) => {
+        const el = e.currentTarget;
+        const cards = Array.from(el.children);
+        if (cards.length) {
+          const nearest = cards.reduce((best, card, i) =>
+            Math.abs(card.offsetLeft - el.scrollLeft - el.offsetLeft) <
+            Math.abs(cards[best].offsetLeft - el.scrollLeft - el.offsetLeft) ? i : best, 0);
+          setIdx(nearest);
+        }
+      }} className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
         {list.map((p) => (
-          <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className="glass glow w-72 shrink-0 snap-start rounded-2xl p-6">
+          p.link
+            ? <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className="glass glow w-[min(82vw,20rem)] shrink-0 snap-start rounded-2xl p-6">
+            : <article key={p.title} className="glass glow w-[min(82vw,20rem)] shrink-0 snap-start rounded-2xl p-6">
             <div className="mb-4 flex items-center justify-between gap-2">
               <span
                 className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[p.status] || STATUS_STYLES["Not Started"]
@@ -189,12 +211,15 @@ function Projects() {
             <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
             <p className="mt-2 text-sm text-white/80">{p.desc}</p>
             <p className="mt-6 text-sm font-semibold">{p.metric}</p>
-          </a>
+            {p.private && <p className="mt-3 text-xs text-steel">Private project · Source code not public</p>}
+            {p.status === "Planned" && <p className="mt-3 text-xs text-steel">Planned project</p>}
+            {p.link && <span className="mt-5 inline-block text-sm font-semibold underline underline-offset-4">View project</span>}
+          {p.link ? </a> : </article>
         ))}
       </div>
       <div className="mt-4 flex justify-center gap-2">
         {list.map((p, i) => (
-          <button key={p.title} onClick={() => to(i)} aria-label={`Go to ${p.title}`} className={`h-2 rounded-full transition-all ${i === idx ? "w-6 bg-white" : "w-2 bg-white/30"}`} />
+          <button key={p.title} onClick={() => to(i)} aria-label={`Go to ${p.title}`} aria-current={i === idx ? "true" : undefined} className={`h-2 rounded-full transition-all ${i === idx ? "w-6 bg-white" : "w-2 bg-white/30"}`} />
         ))}
       </div>
     </Section>
