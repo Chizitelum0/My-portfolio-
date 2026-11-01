@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { profile, stats, about, stack, skills, projects, services, testimonials, socials } from "./data";
+import { profile, stats, about, stack, skills, projects, services, socials } from "./data";
 
-const NAV = ["about", "skills", "projects", "services", "testimonials", "contact"];
+const NAV = ["about", "skills", "projects", "engineering-focus", "contact"];
 
 /* ---------- inline icons (no library needed) ---------- */
 const Svg = ({ className = "h-5 w-5", children }) => (
@@ -100,7 +100,7 @@ function Hero() {
       </div>
       <div className="spin-border mx-auto w-full max-w-sm">
         <div className="flex aspect-square items-center justify-center rounded-[1.4rem] bg-black p-6">
-          <img src="/public/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
+          <img src="/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
         </div>
       </div>
       <a href="#about" aria-label="Scroll down" className="bounce-y absolute bottom-6 left-1/2 text-steel"><ArrowDown /></a>
@@ -135,19 +135,10 @@ function Skills() {
   return (
     <Section id="skills" title="Skills & technologies">
       <div className="grid gap-6 md:grid-cols-3">
-        {skills.map((g) => (
-          <Reveal key={g.group} className="glass glow rounded-2xl p-6">
-            <h3 className="mb-4 font-semibold">{g.group}</h3>
-            {g.items.map((s) => (
-              <div key={s.name} className="mb-4">
-                <div className="mb-1 flex justify-between text-sm"><span>{s.name}</span><span className="text-steel">{s.tag}</span></div>
-                <div className="h-2 rounded-full bg-white/10" role="progressbar" aria-valuenow={s.level} aria-label={s.name}>
-                  <div className="h-2 rounded-full bg-gradient-to-r from-steel to-white" style={{ width: `${s.level}%` }} />
-                </div>
-              </div>
-            ))}
-          </Reveal>
-        ))}
+        {skills.map((g) => <Reveal key={g.group} className="glass glow rounded-2xl p-6">
+          <h3 className="mb-4 font-semibold">{g.group}</h3>
+          <ul className="space-y-3">{g.items.map((s) => <li key={s.name} className="flex items-center justify-between gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0"><span>{s.name}</span><span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-xs text-steel">{s.tag}</span></li>)}</ul>
+        </Reveal>)}
       </div>
     </Section>
   );
@@ -212,7 +203,7 @@ function Projects() {
 
 function Services() {
   return (
-    <Section id="services" title="Services">
+    <Section id="engineering-focus" title="Engineering focus">
       <div className="grid gap-5 md:grid-cols-3">
         {services.map((s) => (
           <Reveal key={s.title} className={`glass glow rounded-2xl p-6 ${s.big ? "md:col-span-2 md:row-span-2 md:p-10" : ""}`}>
@@ -221,29 +212,6 @@ function Services() {
             <p className="mt-2 text-steel">{s.desc}</p>
           </Reveal>
         ))}
-      </div>
-    </Section>
-  );
-}
-
-function Testimonials() {
-  const [i, setI] = useState(0);
-  const t = testimonials[i];
-  const go = (d) => setI((i + d + testimonials.length) % testimonials.length);
-  return (
-    <Section id="testimonials" title="What clients say">
-      <div className="glass glow grid max-w-3xl gap-6 rounded-2xl p-8 sm:grid-cols-[8rem_1fr]">
-        <img src={t.photo} alt={t.name} className="h-32 w-32 rounded-2xl object-cover object-top grayscale transition duration-500 hover:grayscale-0" />
-        <div>
-          <p className="text-xl leading-relaxed">“{t.quote}”</p>
-          <p className="mt-5 font-semibold">{t.name}</p>
-          <p className="text-sm text-steel">{t.role} · {t.result}</p>
-        </div>
-      </div>
-      <div className="mt-6 flex items-center gap-3">
-        <Arrow label="Previous testimonial" onClick={() => go(-1)}><ChevronLeft className="h-4 w-4" /></Arrow>
-        <Arrow label="Next testimonial" onClick={() => go(1)}><ChevronRight className="h-4 w-4" /></Arrow>
-        <span className="text-sm text-steel">{i + 1} / {testimonials.length}</span>
       </div>
     </Section>
   );
@@ -347,7 +315,7 @@ export default function App() {
         <div className="absolute -right-32 top-[55%] h-[28rem] w-[28rem] rounded-full bg-white/10 blur-3xl" />
       </div>
       <Navbar />
-      <main><Hero /><About /><Skills /><Projects /><Services /><Testimonials /><Contact /></main>
+      <main><Hero /><About /><Skills /><Projects /><Services /><Contact /></main>
       <Footer />
     </>
   );
