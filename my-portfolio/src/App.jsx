@@ -324,7 +324,7 @@ function Footer() {
     <footer className="border-t border-white/10 px-6 py-12">
       <div className="mx-auto grid max-w-5xl gap-8 text-sm sm:grid-cols-3">
         <div><p className="text-lg font-extrabold">{"</>"} {profile.name}</p><p className="mt-2 text-steel">{profile.role}</p></div>
-        <div><p className="mb-2 font-semibold">Quick links</p><ul className="space-y-1 text-steel">{NAV.map((id) => <li key={id}><a href={`#${id}`} className="capitalize hover:text-white">{id}</a></li>)}</ul></div>
+        <div><p className="mb-2 font-semibold">Quick links</p><ul className="space-y-1 text-steel">{NAV.map((id) => <li key={id}><a href={`#${id}`} className="capitalize hover:text-white">{id === "engineering-focus" ? "Engineering focus" : id}</a></li>)}</ul></div>
         <div><p className="mb-2 font-semibold">Connect</p><ul className="space-y-1 text-steel">{socials.map((s) => <li key={s.label}><a href={s.href} target="_blank" rel="noreferrer" className="hover:text-white">{s.label}</a></li>)}</ul></div>
       </div>
       <p className="mx-auto mt-10 max-w-5xl text-sm text-steel">© {new Date().getFullYear()} {profile.name}</p>
