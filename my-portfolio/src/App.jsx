@@ -171,12 +171,11 @@ function Projects() {
       track.current.scrollTo({ left: card.offsetLeft - track.current.offsetLeft, behavior: "smooth" });
     }
   };
-  useEffect(() => { setIdx(0); track.current?.scrollTo({ left: 0 }); }, [cat]);
   return (
     <Section id="projects" title="Projects">
       <div className="mb-6 flex flex-wrap items-center gap-2">
         {cats.map((c) => (
-          <button key={c} onClick={() => setCat(c)} aria-pressed={cat === c} className={`rounded-full px-4 py-1.5 text-sm ${cat === c ? "bg-white text-black" : "glass"}`}>{c}</button>
+          <button key={c} onClick={() => { setCat(c); setIdx(0); track.current?.scrollTo({ left: 0, behavior: "smooth" }); }} aria-pressed={cat === c} className={`rounded-full px-4 py-1.5 text-sm ${cat === c ? "bg-white text-black" : "glass"}`}>{c}</button>
         ))}
         <div className="ml-auto flex gap-2">
           <Arrow label="Previous project" onClick={() => to(Math.max(idx - 1, 0))}><ChevronLeft className="h-4 w-4" /></Arrow>
