@@ -37,3 +37,5 @@ section { scroll-margin-top: 5rem; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .spin-border, .bounce-y { animation: none; }
 }
+:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+@media (max-width: 639px) { section { scroll-margin-top: 5.5rem; } }

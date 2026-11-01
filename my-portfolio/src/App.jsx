@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { profile, stats, about, stack, skills, projects, services, testimonials, socials } from "./data";
+import { profile, stats, about, stack, skills, projects, services, socials } from "./data";
 
-const NAV = ["about", "skills", "projects", "services", "testimonials", "contact"];
+const NAV = ["about", "skills", "projects", "engineering-focus", "contact"];
 
 /* ---------- inline icons (no library needed) ---------- */
 const Svg = ({ className = "h-5 w-5", children }) => (
@@ -60,21 +60,28 @@ const Arrow = ({ onClick, label, children }) => (
 function Navbar() {
   const active = useScrollSpy(NAV);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 20);
     on(); window.addEventListener("scroll", on);
     return () => window.removeEventListener("scroll", on);
   }, []);
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition ${scrolled ? "glass" : ""}`}>
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <a href="#top" className="font-extrabold">{"</>"} {profile.name}</a>
+    <header className={`fixed inset-x-0 top-0 z-50 border-b border-white/10 transition ${scrolled || menuOpen ? "glass" : "bg-black/70 backdrop-blur-md"}`}>
+      <nav className="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-4" aria-label="Main navigation">
+        <a href="#top" className="font-extrabold" onClick={() => setMenuOpen(false)}>{"</>"} {profile.name}</a>
         <ul className="hidden gap-6 text-sm sm:flex">
           {NAV.map((id) => (
-            <li key={id}><a href={`#${id}`} className={`capitalize transition hover:text-white ${active === id ? "text-white" : "text-steel"}`}>{id}</a></li>
+            <li key={id}><a href={`#${id}`} className={`capitalize transition hover:text-white ${active === id ? "text-white" : "text-steel"}`}>{id === "engineering-focus" ? "Engineering focus" : id}</a></li>
           ))}
         </ul>
-        <a href="#contact" className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black">Hire me</a>
+        <div className="flex items-center gap-3">
+          <a href="#contact" className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black">Hire me</a>
+          <button type="button" className="glass rounded-full px-3 py-2 text-sm sm:hidden" aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? "Close" : "Menu"}</button>
+        </div>
+        {menuOpen && <div id="mobile-navigation" className="glass absolute inset-x-4 top-full mt-2 flex flex-col gap-4 rounded-2xl p-5 text-sm shadow-2xl sm:hidden">
+          {NAV.map((id) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} className="capitalize text-steel hover:text-white">{id === "engineering-focus" ? "Engineering focus" : id}</a>)}
+        </div>}
       </nav>
     </header>
   );
@@ -100,7 +107,7 @@ function Hero() {
       </div>
       <div className="spin-border mx-auto w-full max-w-sm">
         <div className="flex aspect-square items-center justify-center rounded-[1.4rem] bg-black p-6">
-          <img src="/public/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
+          <img src="/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
         </div>
       </div>
       <a href="#about" aria-label="Scroll down" className="bounce-y absolute bottom-6 left-1/2 text-steel"><ArrowDown /></a>
@@ -135,19 +142,10 @@ function Skills() {
   return (
     <Section id="skills" title="Skills & technologies">
       <div className="grid gap-6 md:grid-cols-3">
-        {skills.map((g) => (
-          <Reveal key={g.group} className="glass glow rounded-2xl p-6">
-            <h3 className="mb-4 font-semibold">{g.group}</h3>
-            {g.items.map((s) => (
-              <div key={s.name} className="mb-4">
-                <div className="mb-1 flex justify-between text-sm"><span>{s.name}</span><span className="text-steel">{s.tag}</span></div>
-                <div className="h-2 rounded-full bg-white/10" role="progressbar" aria-valuenow={s.level} aria-label={s.name}>
-                  <div className="h-2 rounded-full bg-gradient-to-r from-steel to-white" style={{ width: `${s.level}%` }} />
-                </div>
-              </div>
-            ))}
-          </Reveal>
-        ))}
+        {skills.map((g) => <Reveal key={g.group} className="glass glow rounded-2xl p-6">
+          <h3 className="mb-4 font-semibold">{g.group}</h3>
+          <ul className="space-y-3">{g.items.map((s) => <li key={s.name} className="flex items-center justify-between gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0"><span>{s.name}</span><span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-xs text-steel">{s.tag}</span></li>)}</ul>
+        </Reveal>)}
       </div>
     </Section>
   );
@@ -159,7 +157,7 @@ function Projects() {
       "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
     "Under Development":
       "border-blue-400/30 bg-blue-400/10 text-blue-300",
-    "Not Started":
+    Planned:
       "border-white/15 bg-white/5 text-steel",
   };
   const cats = ["All", ...new Set(projects.map((p) => p.category))];
@@ -167,43 +165,60 @@ function Projects() {
   const [idx, setIdx] = useState(0);
   const track = useRef(null);
   const list = cat === "All" ? projects : projects.filter((p) => p.category === cat);
-  const STEP = 308;
-  const to = (i) => track.current?.scrollTo({ left: i * STEP, behavior: "smooth" });
-  useEffect(() => { setIdx(0); track.current?.scrollTo({ left: 0 }); }, [cat]);
+  const to = (i) => {
+    const card = track.current?.children[i];
+    if (card && track.current) {
+      track.current.scrollTo({ left: card.offsetLeft - track.current.offsetLeft, behavior: "smooth" });
+    }
+  };
   return (
     <Section id="projects" title="Projects">
       <div className="mb-6 flex flex-wrap items-center gap-2">
         {cats.map((c) => (
-          <button key={c} onClick={() => setCat(c)} aria-pressed={cat === c} className={`rounded-full px-4 py-1.5 text-sm ${cat === c ? "bg-white text-black" : "glass"}`}>{c}</button>
+          <button key={c} onClick={() => { setCat(c); setIdx(0); track.current?.scrollTo({ left: 0, behavior: "smooth" }); }} aria-pressed={cat === c} className={`rounded-full px-4 py-1.5 text-sm ${cat === c ? "bg-white text-black" : "glass"}`}>{c}</button>
         ))}
         <div className="ml-auto flex gap-2">
           <Arrow label="Previous project" onClick={() => to(Math.max(idx - 1, 0))}><ChevronLeft className="h-4 w-4" /></Arrow>
           <Arrow label="Next project" onClick={() => to(Math.min(idx + 1, list.length - 1))}><ChevronRight className="h-4 w-4" /></Arrow>
         </div>
       </div>
-      <div ref={track} onScroll={(e) => setIdx(Math.round(e.currentTarget.scrollLeft / STEP))} className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
-        {list.map((p) => (
-          <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className="glass glow w-72 shrink-0 snap-start rounded-2xl p-6">
-            <div className="mb-4 flex items-center justify-between gap-2">
-              <span
-                className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[p.status] || STATUS_STYLES["Not Started"]
-                  }`}
-              >
-                <span className="mr-2 h-1.5 w-1.5 rounded-full bg-current" />
-                {p.status || "Not Started"}
-              </span>
-
-              <span className="text-xs text-steel">{p.category}</span>
-            </div>
-            <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
-            <p className="mt-2 text-sm text-white/80">{p.desc}</p>
-            <p className="mt-6 text-sm font-semibold">{p.metric}</p>
-          </a>
-        ))}
+      <div ref={track} onScroll={(e) => {
+        const el = e.currentTarget;
+        const cards = Array.from(el.children);
+        if (cards.length) {
+          const nearest = cards.reduce((best, card, index) =>
+            Math.abs(card.offsetLeft - el.scrollLeft - el.offsetLeft) <
+            Math.abs(cards[best].offsetLeft - el.scrollLeft - el.offsetLeft) ? index : best, 0);
+          setIdx(nearest);
+        }
+      }} className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
+        {list.map((p) => {
+          const content = (
+            <>
+              <div className="mb-4 flex items-center justify-between gap-2">
+                <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[p.status] || STATUS_STYLES.Planned}`}>
+                  <span className="mr-2 h-1.5 w-1.5 rounded-full bg-current" />
+                  {p.status || "Planned"}
+                </span>
+                <span className="text-xs text-steel">{p.category}</span>
+              </div>
+              <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
+              <p className="mt-2 text-sm text-white/80">{p.desc}</p>
+              <p className="mt-6 text-sm font-semibold">{p.metric}</p>
+              {p.private && <p className="mt-3 text-xs text-steel">Private project · Source code not public</p>}
+              {p.status === "Planned" && <p className="mt-3 text-xs text-steel">Planned project</p>}
+              {p.link && <span className="mt-5 inline-block text-sm font-semibold underline underline-offset-4">View project</span>}
+            </>
+          );
+          const cardClass = "glass glow block w-[min(82vw,20rem)] shrink-0 snap-start rounded-2xl p-6";
+          return p.link
+            ? <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className={cardClass}>{content}</a>
+            : <article key={p.title} className={cardClass}>{content}</article>;
+        })}
       </div>
       <div className="mt-4 flex justify-center gap-2">
         {list.map((p, i) => (
-          <button key={p.title} onClick={() => to(i)} aria-label={`Go to ${p.title}`} className={`h-2 rounded-full transition-all ${i === idx ? "w-6 bg-white" : "w-2 bg-white/30"}`} />
+          <button key={p.title} onClick={() => to(i)} aria-label={`Go to ${p.title}`} aria-current={i === idx ? "true" : undefined} className={`h-2 rounded-full transition-all ${i === idx ? "w-6 bg-white" : "w-2 bg-white/30"}`} />
         ))}
       </div>
     </Section>
@@ -212,7 +227,7 @@ function Projects() {
 
 function Services() {
   return (
-    <Section id="services" title="Services">
+    <Section id="engineering-focus" title="Engineering focus">
       <div className="grid gap-5 md:grid-cols-3">
         {services.map((s) => (
           <Reveal key={s.title} className={`glass glow rounded-2xl p-6 ${s.big ? "md:col-span-2 md:row-span-2 md:p-10" : ""}`}>
@@ -221,29 +236,6 @@ function Services() {
             <p className="mt-2 text-steel">{s.desc}</p>
           </Reveal>
         ))}
-      </div>
-    </Section>
-  );
-}
-
-function Testimonials() {
-  const [i, setI] = useState(0);
-  const t = testimonials[i];
-  const go = (d) => setI((i + d + testimonials.length) % testimonials.length);
-  return (
-    <Section id="testimonials" title="What clients say">
-      <div className="glass glow grid max-w-3xl gap-6 rounded-2xl p-8 sm:grid-cols-[8rem_1fr]">
-        <img src={t.photo} alt={t.name} className="h-32 w-32 rounded-2xl object-cover object-top grayscale transition duration-500 hover:grayscale-0" />
-        <div>
-          <p className="text-xl leading-relaxed">“{t.quote}”</p>
-          <p className="mt-5 font-semibold">{t.name}</p>
-          <p className="text-sm text-steel">{t.role} · {t.result}</p>
-        </div>
-      </div>
-      <div className="mt-6 flex items-center gap-3">
-        <Arrow label="Previous testimonial" onClick={() => go(-1)}><ChevronLeft className="h-4 w-4" /></Arrow>
-        <Arrow label="Next testimonial" onClick={() => go(1)}><ChevronRight className="h-4 w-4" /></Arrow>
-        <span className="text-sm text-steel">{i + 1} / {testimonials.length}</span>
       </div>
     </Section>
   );
@@ -331,7 +323,7 @@ function Footer() {
     <footer className="border-t border-white/10 px-6 py-12">
       <div className="mx-auto grid max-w-5xl gap-8 text-sm sm:grid-cols-3">
         <div><p className="text-lg font-extrabold">{"</>"} {profile.name}</p><p className="mt-2 text-steel">{profile.role}</p></div>
-        <div><p className="mb-2 font-semibold">Quick links</p><ul className="space-y-1 text-steel">{NAV.map((id) => <li key={id}><a href={`#${id}`} className="capitalize hover:text-white">{id}</a></li>)}</ul></div>
+        <div><p className="mb-2 font-semibold">Quick links</p><ul className="space-y-1 text-steel">{NAV.map((id) => <li key={id}><a href={`#${id}`} className="capitalize hover:text-white">{id === "engineering-focus" ? "Engineering focus" : id}</a></li>)}</ul></div>
         <div><p className="mb-2 font-semibold">Connect</p><ul className="space-y-1 text-steel">{socials.map((s) => <li key={s.label}><a href={s.href} target="_blank" rel="noreferrer" className="hover:text-white">{s.label}</a></li>)}</ul></div>
       </div>
       <p className="mx-auto mt-10 max-w-5xl text-sm text-steel">© {new Date().getFullYear()} {profile.name}</p>
@@ -347,7 +339,7 @@ export default function App() {
         <div className="absolute -right-32 top-[55%] h-[28rem] w-[28rem] rounded-full bg-white/10 blur-3xl" />
       </div>
       <Navbar />
-      <main><Hero /><About /><Skills /><Projects /><Services /><Testimonials /><Contact /></main>
+      <main><Hero /><About /><Skills /><Projects /><Services /><Contact /></main>
       <Footer />
     </>
   );
