@@ -39,3 +39,12 @@ section { scroll-margin-top: 5rem; }
 }
 :focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 @media (max-width: 639px) { section { scroll-margin-top: 5.5rem; } }
+
+/* Visual rhythm and mobile-first refinements */
+section:not(#top) { padding-top: clamp(3.75rem, 8vw, 6.5rem); padding-bottom: clamp(3.75rem, 8vw, 6.5rem); }
+.glass { border-color: rgb(255 255 255 / 0.11); }
+::selection { background: rgb(255 255 255 / 0.9); color: #000; }
+@media (max-width: 639px) {
+  body { overflow-x: hidden; }
+  section:not(#top) { padding-left: 1.25rem; padding-right: 1.25rem; }
+}

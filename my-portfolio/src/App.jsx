@@ -89,28 +89,31 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="top" className="relative mx-auto grid min-h-screen max-w-5xl items-center gap-12 px-6 pt-24 pb-16 md:grid-cols-2">
-      <div>
-        <p className="glass mb-5 inline-block rounded-full px-4 py-1.5 text-sm text-steel">{profile.role} · {profile.location}</p>
-        <h1 className="text-5xl font-extrabold leading-tight sm:text-6xl">{profile.headline}</h1>
-        <div className="mt-8 flex flex-wrap gap-4">
-          <a href="#projects" className="rounded-full bg-white px-6 py-3 font-semibold text-black">See my work</a>
-          <a href="#contact" className="glass glow rounded-full px-6 py-3 font-semibold">Get in touch</a>
+    <section id="top" className="relative mx-auto grid min-h-[min(900px,100svh)] max-w-6xl items-center gap-10 px-5 pb-20 pt-28 sm:px-8 md:grid-cols-[1.15fr_.85fr] md:gap-14 md:px-10 md:pt-24">
+      <div className="relative z-10">
+        <p className="glass mb-6 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full px-4 py-2 text-xs text-steel sm:text-sm"><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />{profile.role}<span className="text-white/30">·</span>{profile.location}</p>
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-steel">Software engineering · Fintech · Systems</p>
+        <h1 className="max-w-3xl text-[clamp(2.65rem,8vw,5.6rem)] font-extrabold leading-[1.02] tracking-[-0.055em]">{profile.headline}</h1>
+        <p className="mt-6 max-w-xl text-base leading-8 text-white/65 sm:text-lg">I build and learn by working on practical software: backend services, data systems, and tools for real business workflows.</p>
+        <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
+          <a href="#projects" className="rounded-full bg-white px-6 py-3.5 text-center text-sm font-semibold text-black transition hover:bg-white/85">Explore my work</a>
+          <a href="#contact" className="glass glow rounded-full px-6 py-3.5 text-center text-sm font-semibold">Get in touch</a>
         </div>
-        <dl className="mt-12 flex">
+        <dl className="mt-10 grid max-w-lg grid-cols-3 divide-x divide-white/15 border-t border-white/10 pt-6 sm:mt-14">
           {stats.map((s) => (
-            <div key={s.label} className="border-l border-white/15 px-5 first:border-0 first:pl-0">
-              <dt className="text-xl font-extrabold">{s.value}</dt><dd className="text-sm text-steel">{s.label}</dd>
+            <div key={s.label} className="min-w-0 px-3 first:pl-0">
+              <dt className="text-lg font-extrabold tracking-tight sm:text-2xl">{s.value}</dt><dd className="mt-1 text-xs leading-5 text-steel sm:text-sm">{s.label}</dd>
             </div>
           ))}
         </dl>
       </div>
-      <div className="spin-border mx-auto w-full max-w-sm">
-        <div className="flex aspect-square items-center justify-center rounded-[1.4rem] bg-black p-6">
-          <img src="/logo.jpg" alt={`${profile.name} logo`} className="h-full w-full object-contain" />
+      <div className="spin-border mx-auto w-full max-w-[19rem] md:max-w-sm">
+        <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-[1.4rem] bg-[radial-gradient(circle_at_50%_35%,#262626,transparent_65%),#050505] p-7 sm:p-9">
+          <div className="absolute inset-5 rounded-full border border-white/10" />
+          <img src="/logo.jpg" alt={`${profile.name} logo`} className="relative h-full w-full object-contain drop-shadow-[0_12px_35px_rgba(255,255,255,0.12)]" />
         </div>
       </div>
-      <a href="#about" aria-label="Scroll down" className="bounce-y absolute bottom-6 left-1/2 text-steel"><ArrowDown /></a>
+      <a href="#about" aria-label="Scroll down" className="bounce-y absolute bottom-5 left-1/2 hidden -translate-x-1/2 text-steel md:block"><ArrowDown /></a>
     </section>
   );
 }
@@ -172,12 +175,12 @@ function Projects() {
     }
   };
   return (
-    <Section id="projects" title="Projects">
-      <div className="mb-6 flex flex-wrap items-center gap-2">
+    <Section id="projects" title="Selected projects">
+      <div className="mb-7 flex flex-wrap items-center gap-3">
         {cats.map((c) => (
           <button key={c} onClick={() => { setCat(c); setIdx(0); track.current?.scrollTo({ left: 0, behavior: "smooth" }); }} aria-pressed={cat === c} className={`rounded-full px-4 py-1.5 text-sm ${cat === c ? "bg-white text-black" : "glass"}`}>{c}</button>
         ))}
-        <div className="ml-auto flex gap-2">
+        <div className="ml-auto flex w-full justify-end gap-2 sm:w-auto">
           <Arrow label="Previous project" onClick={() => to(Math.max(idx - 1, 0))}><ChevronLeft className="h-4 w-4" /></Arrow>
           <Arrow label="Next project" onClick={() => to(Math.min(idx + 1, list.length - 1))}><ChevronRight className="h-4 w-4" /></Arrow>
         </div>
@@ -203,14 +206,14 @@ function Projects() {
                 <span className="text-xs text-steel">{p.category}</span>
               </div>
               <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
-              <p className="mt-2 text-sm text-white/80">{p.desc}</p>
-              <p className="mt-6 text-sm font-semibold">{p.metric}</p>
+              <p className="mt-3 flex-1 text-sm leading-7 text-white/70">{p.desc}</p>
+              <p className="mt-6 border-t border-white/10 pt-4 text-xs font-semibold leading-6 text-white/85">{p.metric}</p>
               {p.private && <p className="mt-3 text-xs text-steel">Private project · Source code not public</p>}
               {p.status === "Planned" && <p className="mt-3 text-xs text-steel">Planned project</p>}
               {p.link && <span className="mt-5 inline-block text-sm font-semibold underline underline-offset-4">View project</span>}
             </>
           );
-          const cardClass = "glass glow block w-[min(82vw,20rem)] shrink-0 snap-start rounded-2xl p-6";
+          const cardClass = "glass glow flex min-h-[17rem] w-[min(86vw,22rem)] shrink-0 snap-start flex-col rounded-2xl p-5 transition duration-300 hover:-translate-y-1 sm:p-6";
           return p.link
             ? <a key={p.title} href={p.link} target="_blank" rel="noreferrer" className={cardClass}>{content}</a>
             : <article key={p.title} className={cardClass}>{content}</article>;
